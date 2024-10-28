@@ -1,0 +1,25 @@
+# Define the path to the directory
+$path = "C:\test"
+
+# Get all files in the directory and Filters to include only files that have numbers in their names.
+$files = Get-ChildItem -Path $path | Where-Object { $_.BaseName -match '\d+' }
+
+# Group files by their base name (excluding the numeric part)
+$groupedFiles = $files | Group-Object { $_.BaseName -replace '\d.*$', '' }
+
+# Loop through each group of files
+foreach ($group in $groupedFiles) {
+    # Sort files in the group by the numerical part of the filename in descending order
+    $highestFile = $group.Group |
+        Sort-Object { [int]($_.BaseName -replace '\D', '') } -Descending |  # Sort by numeric value in descending order
+        Select-Object -First 1  # Get the file with the highest number
+
+    # Delete other files in the group
+    $filesToDelete = $group.Group | Where-Object { $_.FullName -ne $highestFile.FullName }
+
+    # Remove the other files
+    foreach ($file in $filesToDelete) {
+        Remove-Item -Path $file.FullName -Force
+        Write-Host "Deleted file: $($file.Name)"
+    }
+}
