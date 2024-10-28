@@ -1,0 +1,55 @@
+$destination = "\\finance360.net\prod\AppStore\SQLData\FlatFiles\EasyTrac\Inbound"
+# Define the folder where the zip files are located
+
+$zipFilesPath = "H:\FTPData\EasyTrac\Inbound"
+# Define the folder where to extract the files
+$destinationPathcpt = "\\finance360.net\prod\AppStore\SQLData\FlatFiles\EasyTrac\Inbound\ServiceLogsCPT"
+$destinationPathconsents = "\\finance360.net\prod\AppStore\SQLData\FlatFiles\EasyTrac\Inbound\Consents"
+$destinationPathorders = "\\finance360.net\prod\AppStore\SQLData\FlatFiles\EasyTrac\Inbound\Orders"
+$destinationPathudo = "\\finance360.net\prod\AppStore\SQLData\FlatFiles\EasyTrac\Inbound\ServiceLogsUDO"
+$destinationPathusers = "\\finance360.net\prod\AppStore\SQLData\FlatFiles\EasyTrac\Inbound\Users"
+
+# Get all zip files from the directory
+$zipFiles = Get-ChildItem -Path $zipFilesPath -Filter *.zip
+
+# Loop through each zip file
+foreach ($zipFile in $zipFiles) {
+    # Check if the filename contains the pattern you're looking for
+    if ($zipFile.Name -like "*CPT*") {
+        # Display the file being extracted
+        Write-Host "Extracting $($zipFile.FullName)"
+
+        # Extract the zip file
+        Expand-Archive -Path $zipFile.FullName -DestinationPath $destinationPathcpt -Force
+    }
+     if ($zipFile.Name -like "*consent*") {
+        # Display the file being extracted
+        Write-Host "Extracting $($zipFile.FullName)"
+
+        # Extract the zip file
+        Expand-Archive -Path $zipFile.FullName -DestinationPath $destinationPathconsents -Force
+    }
+     if ($zipFile.Name -like "*orders*") {
+        # Display the file being extracted
+        Write-Host "Extracting $($zipFile.FullName)"
+
+        # Extract the zip file
+        Expand-Archive -Path $zipFile.FullName -DestinationPath $destinationPathorders -Force
+    }
+     if ($zipFile.Name -like "*udo*") {
+        # Display the file being extracted
+        Write-Host "Extracting $($zipFile.FullName)"
+
+        # Extract the zip file
+        Expand-Archive -Path $zipFile.FullName -DestinationPath $destinationPathudo -Force
+    }
+     if ($zipFile.Name -like "*users*") {
+        # Display the file being extracted
+        Write-Host "Extracting $($zipFile.FullName)"
+
+        # Extract the zip file
+        Expand-Archive -Path $zipFile.FullName -DestinationPath $destinationPathusers -Force
+    }
+}
+
+Write-Host "Unzipping completed."
